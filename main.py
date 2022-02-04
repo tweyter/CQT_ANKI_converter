@@ -1,15 +1,8 @@
-# This is a sample Python script.
-
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
 """
-from pdfminer.high_level import extract_pages
-from pdfminer.layout import LTTextContainer
-for page_layout in extract_pages("test.pdf"):
-    for element in page_layout:
-        if isinstance(element, LTTextContainer):
-            print(element.get_text())
+CQT_ANKI_converter
+
+Converts the JetBlue Continuous Qualification Training (CQT) home study PDF file into an ANKI deck.
+
 """
 from pathlib import Path
 
@@ -19,6 +12,7 @@ import io
 from PIL import Image
 import genanki
 from bs4 import BeautifulSoup
+# noinspection PyProtectedMember
 from cssutils import parseStyle
 
 with open('style.css') as style_css:
@@ -103,17 +97,9 @@ def pdf_test(file_path):
                 model=NO_MEDIA_MODEL,
                 fields=[question, answer]
             )
-            # my_deck.add_note(note)
-            # processed_notes += 1
+            my_deck.add_note(note)
+            processed_notes += 1
         else:
-            # xref = image_list[-1][0]
-            # base_image = pdf_file.extract_image(xref)
-            # image_bytes = base_image["image"]
-            # img = Image.open(io.BytesIO(image_bytes))
-            # rgb_img = img.convert("RGB")
-            # file_path = IMAGE_PATH / f"image_{page_index}.jpg"
-            # rgb_img.save(file_path)
-
             file_name = f"image_{page_index}.jpg"
             fp = Path('images', file_name)
             last_image = Image.new("RGB", (120, 60), (0, 0, 0))
@@ -180,6 +166,5 @@ def anki_note(question, answer):
     pkg.write_to_file('test_anki.apkg')
 
 
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     pdf_test(r'C:\Users\tweyt\Downloads\A320_SPV_Home_Study.pdf')
